@@ -136,3 +136,27 @@ instead of making a request to the server to fetch the notifications of students
 
 the tradeoff of using this is we still might have to make a request to the db once in a while because the data can change between like being read or unread or deleted
 
+# stage 5
+
+this is a very error prone code since its just a for loop doing the tasks one by one and tho the writes to the db can be fast talking with the email servers is a really slow task since i have experienced it before hand while making a mail agent which can lead to them blocking off each other
+
+therefore to redesign this first i would like to add a try block to it so if it fails we can rerun the task instead of silently exiting from it
+
+for the mails i would like to use kafkas asynchronus messaging to handle it 
+
+
+function notify_all(student_ids, message) {
+    bulk_save_to_db(student_ids, message);
+    for (student_id in student_ids) {
+        push_to_app(student_id, message);
+        email_queue.add_job(student_id, message); 
+    }
+}
+
+function process_email_queue(job) {
+    try {
+        send_email(job.student_id, job.message);
+    } catch (error) {
+        job.retry_later(); 
+    }
+}
