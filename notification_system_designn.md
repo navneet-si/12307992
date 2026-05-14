@@ -129,3 +129,10 @@ DELETE FROM notifications WHERE id = '1234' AND student_id = '1042';
     FROM notifications 
     WHERE notificationType = 'Placement' 
     AND createdAt >= NOW() - INTERVAL '7 days';
+
+# stage 4
+
+instead of making a request to the server to fetch the notifications of students what we can do instead is use something like a in mem store like redis which can store calls to our db by storing them in the server basically we will keep the most used notifiactions in db and send them off 
+
+the tradeoff of using this is we still might have to make a request to the db once in a while because the data can change between like being read or unread or deleted
+
