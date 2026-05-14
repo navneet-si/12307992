@@ -160,3 +160,12 @@ function process_email_queue(job) {
         job.retry_later(); 
     }
 }
+
+
+# stage 6 
+
+i think i would just maintain a lru cache kind of structure where it will be sorted based on type where i can set the priorites of each of them like placement would be high and then also use the recency with it as well 
+
+
+# stage 7 
+

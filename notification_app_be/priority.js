@@ -1,5 +1,4 @@
 const { Log } = require('../logging_middleware/log');
-const { Log } = require('./logger');
 
 const weights = {
     "Placement": 3,
