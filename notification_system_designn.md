@@ -66,3 +66,52 @@ PATCH /api/notifications/:id/read
   "message": "Notification deleted"
 }
 
+# stage 2
+
+we will be going for pgsql since the notifiactions will always have fixed fields its easier to mantain and query 
+
+
+#### the table would have these fields :
+
+id (unique string for each msg)
+
+student_id (to know who the message belongs to)
+
+type (can be "Event", "Result" or "Placement")
+
+message (the actual text)
+
+timestamp (when it was created)
+
+is_read (boolean, default is false)
+
+
+#### stop the db from getting overwhelmmed
+
+basically we will be indexing the notifiactions and stopping the read notifications to be queired or seen untill specifically searched for or are filtered 
+
+to also stop the db costs from growing further we can use a cron job to run a background clean up every month and also take up snapshots of it as a backup
+
+
+### queries 
+
+sql queries
+
+based on the apis we made in stage 1 here is the sql the server will run behind the scenes
+
+to fetch the notifications (we use limit to not load all of them at once)
+SQL
+
+SELECT * FROM notifications WHERE student_id = '1042' ORDER BY timestamp DESC LIMIT 20;
+
+
+to mark a notification as read
+SQL
+
+UPDATE notifications SET is_read = true WHERE id = '1234' AND student_id = '1042';
+
+
+to delete a notification
+SQL
+
+DELETE FROM notifications WHERE id = '1234' AND student_id = '1042';
