@@ -115,3 +115,17 @@ to delete a notification
 SQL
 
 DELETE FROM notifications WHERE id = '1234' AND student_id = '1042';
+
+ # stage 3
+
+    the logic is accurate but is not up to the mark as select * returns all data which is redundant 
+    to tackle this problem firstly i would like to use indexing or to be precise composite indexing using the read field and the studentId field 
+
+    indexing all fields is a bad idea since tho it makes reads faster indexing on everyupadte is a time consuming task which isnt really optimal
+
+   and this is the query i would use 
+
+    SELECT DISTINCT studentID 
+    FROM notifications 
+    WHERE notificationType = 'Placement' 
+    AND createdAt >= NOW() - INTERVAL '7 days';
